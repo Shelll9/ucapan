@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ucapan Ulang Tahun</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #1e3c72, #2a5298, #6dd5ed);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      overflow: hidden;
+      color: white;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    #start-screen {
+      text-align: center;
+      font-size: 1.7rem;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; transform: scale(1.05); }
+      100% { opacity: 0.5; }
+    }
+
+    #message-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 25px;
+      padding: 45px 35px;
+      max-width: 520px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+      animation: fadeIn 2s ease forwards, glowPulse 3s infinite;
+      position: relative;
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 25px rgba(255,255,255,0.5); }
+      50% { box-shadow: 0 0 50px rgba(255,255,255,0.8); }
+    }
+
+    h2 {
+      font-size: 1.9rem;
+      color: #fff;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.8);
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin: 12px 0;
+      opacity: 0;
+      color: #f0f0f0;
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    p:nth-of-type(1) { animation-delay: 0.6s; }
+    p:nth-of-type(2) { animation-delay: 1.2s; }
+    p:nth-of-type(3) { animation-delay: 1.8s; }
+    p:nth-of-type(4) { animation-delay: 2.4s; }
+    p:nth-of-type(5) { animation-delay: 3s; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* bunga frame */
+    .flower {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      background: radial-gradient(circle, #ff69b4 40%, transparent 41%);
+      border-radius: 50%;
+      opacity: 0;
+      animation: bloom 3s ease-in-out forwards;
+      z-index: 3;
+    }
+
+    .flower::before,
+    .flower::after {
+      content: '';
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      background: radial-gradient(circle, #ffd700 40%, transparent 41%);
+      border-radius: 50%;
+    }
+
+    .flower::before { top: -16px; left: 0; }
+    .flower::after { left: -16px; top: 0; }
+
+    @keyframes bloom {
+      0% { transform: scale(0); opacity: 0; }
+      70% { opacity: 1; transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* kelopak jatuh */
+    .petal {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: radial-gradient(circle, #ffb6c1 40%, transparent 41%);
+      border-radius: 50%;
+      top: -20px;
+      animation: fall linear forwards;
+      opacity: 0.85;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* bintang kelap-kelip */
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.2; transform: scale(1); }
+      to { opacity: 1; transform: scale(1.5); }
+    }
+  </style>
+</head>
+<body>
+  <div id="start-screen">✨ Klik untuk membuka kejutan 🎁 ✨</div>
+
+  <div id="message-screen">
+    <div class="card">
+      <h2>Selamat Ulang Tahun 🎉</h2>
+      <p>Terima kasih sudah bertahan sejauh ini 💛</p>
+      <p>Semoga semakin kuat untuk menjalani hari ke depan.</p>
+      <p>Tetap punya hati dan mental yang kokoh.</p>
+      <p>Semoga rezeki selalu lancar.</p>
+      <p>Dan cita-cita yang belum tercapai, semoga tersemogakan ✨</p>
+    </div>
+  </div>
+
+  <script>
+    const startScreen = document.getElementById('start-screen');
+    const messageScreen = document.getElementById('message-screen');
+
+    startScreen.addEventListener('click', () => {
+      startScreen.style.display = 'none';
+      messageScreen.style.display = 'flex';
+      createFlowersOnCard();
+      dropPetals();
+      createStars();
+    });
+
+    function createFlowersOnCard() {
+      const card = document.querySelector('.card');
+      const positions = [
+        { top: "-25px", left: "-25px" },
+        { top: "-25px", right: "-25px" },
+        { bottom: "-25px", left: "-25px" },
+        { bottom: "-25px", right: "-25px" },
+        { top: "-25px", left: "40%" },
+        { bottom: "-25px", left: "40%" },
+        { top: "40%", left: "-25px" },
+        { top: "40%", right: "-25px" }
+      ];
+
+      positions.forEach((pos, index) => {
+        const flower = document.createElement("div");
+        flower.classList.add("flower");
+        Object.assign(flower.style, pos);
+        flower.style.animationDelay = `${index * 0.4}s`;
+        card.appendChild(flower);
+      });
+    }
+
+    function dropPetals() {
+      setInterval(() => {
+        const petal = document.createElement("div");
+        petal.classList.add("petal");
+        petal.style.left = Math.random() * window.innerWidth + "px";
+        petal.style.animationDuration = (Math.random() * 5 + 4) + "s";
+        petal.style.background = Math.random() > 0.5
+          ? "radial-gradient(circle, #ff69b4 40%, transparent 41%)"
+          : "radial-gradient(circle, #ffd700 40%, transparent 41%)";
+        document.body.appendChild(petal);
+        setTimeout(() => petal.remove(), 10000);
+      }, 700);
+    }
+
+    function createStars() {
+      for (let i = 0; i < 40; i++) {
+        const star = document.createElement("div");
+        star.classList.add("star");
+        star.style.top = Math.random() * window.innerHeight + "px";
+        star.style.left = Math.random() * window.innerWidth + "px";
+        star.style.animationDuration = (Math.random() * 2 + 1) + "s";
+        document.body.appendChild(star);
+      }
+    }
+  </script>
+</body>
+</html>
